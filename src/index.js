@@ -68,6 +68,7 @@ export default function universal<Props: Props>(
 
     static preload(props: Props, context: Object = {}) {
       props = props || {}
+      console.log('preload props:', props)
       const { requireAsync, requireSync } = req(asyncModule, options, props)
       let mod
 
@@ -94,6 +95,7 @@ export default function universal<Props: Props>(
 
     static preloadWeak(props: Props, context: Object = {}) {
       props = props || {}
+      console.log('preloadWeak props:', props)
       const { requireSync } = req(asyncModule, options, props)
 
       const mod = requireSync(props, context)

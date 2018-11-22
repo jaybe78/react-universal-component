@@ -148,9 +148,10 @@ export default function requireUniversalModule<Props: Props>(
 
   const addModule = (props: Object): ?string => {
     if (isServer || isTest) {
-      console.log('add module')
+      console.log('add module usesBabelPlugin:', usesBabelPlugin)
       if (chunkName) {
         let name = callForString(chunkName, props)
+
         if (usesBabelPlugin) {
           // if ignoreBabelRename is true, don't apply regex
           const shouldKeepName = options && !!options.ignoreBabelRename

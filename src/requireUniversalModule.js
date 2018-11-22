@@ -218,6 +218,7 @@ const getConfig = (
   options: ModuleOptions,
   props: Props
 ): Config => {
+  console.log('getConfig isDynamic', isDynamic);
   if (isDynamic) {
     let resultingConfig =
       typeof universalConfig === 'function'
@@ -226,6 +227,7 @@ const getConfig = (
     if (options) {
       resultingConfig = { ...resultingConfig, ...options }
     }
+    console.log('resultingConfig', resultingConfig);
     return resultingConfig
   }
 

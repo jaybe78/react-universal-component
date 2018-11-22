@@ -127,7 +127,7 @@ export default function universal<Props: Props>(
         options,
         this.props
       )
-
+      console.log('componentWillMount:', this.props)
       let mod
 
       try {
@@ -166,7 +166,7 @@ export default function universal<Props: Props>(
           nextProps,
           this.props
         )
-
+        console.log('componentWillReceiveProps:', this.props)
         if (shouldUpdate(nextProps, this.props)) {
           let mod
 
@@ -205,13 +205,13 @@ export default function universal<Props: Props>(
       if (this.state.mod && loadingTransition) {
         this.update({ mod: null }) // display `loading` during componentWillReceiveProps
       }
-
+      console.log('requireAsync:')
       const time = new Date()
 
       requireAsync(props, this.context)
         .then((mod: ?any) => {
           const state = { mod }
-
+          console.log('Within requireAsync')
           const timeLapsed = new Date() - time
           if (timeLapsed < minDelay) {
             const extraDelay = minDelay - timeLapsed
@@ -254,7 +254,7 @@ export default function universal<Props: Props>(
       isServer: boolean
     ) {
       const { mod, error } = state
-
+      console.log('handleAfter')
       if (mod && !error) {
         hoist(UniversalComponent, mod, {
           preload: true,

@@ -119,7 +119,50 @@ export default function universal<Props: Props>(
       this.state = { error: null }
     }
 
-    componentWillMount() {
+    /*   static getDerivedStateFromProps(props, state) {
+      if (isDynamic || this._asyncOnly) {
+        const { requireSync, requireAsync, shouldUpdate } = req(
+          asyncModule,
+          options,
+          state,
+          this.props
+        )
+        console.log('componentWillReceiveProps:', this.props)
+        if (shouldUpdate(nextProps, this.props)) {
+          let mod
+
+          try {
+            mod = requireSync(nextProps, this.context)
+          }
+          catch (error) {
+            return this.update({ error })
+          }
+
+          this.handleBefore(false, !!mod)
+
+          if (!mod) {
+            return this.requireAsync(requireAsync, nextProps)
+          }
+
+          const state = { mod }
+
+          if (alwaysDelay) {
+            if (loadingTransition) this.update({ mod: null }) // display `loading` during componentWillReceiveProps
+            setTimeout(() => this.update(state, false, true), minDelay)
+            return
+          }
+
+          this.update(state, false, true)
+        }
+        else if (isHMR()) {
+          const mod = requireSync(nextProps, this.context)
+          this.setState({ mod: () => null }) // HMR /w Redux and HOCs can be finicky, so we
+          setTimeout(() => this.setState({ mod })) // toggle components to insure updates occur
+        }
+      }
+    }*/
+
+    componentDidMount() {
       this._mounted = true
 
       const { addModule, requireSync, requireAsync, asyncOnly } = req(

@@ -50,22 +50,34 @@ export default function requireUniversalModule<Props: Props>(
 
   const requireSync = (props: Object, context: Object): ?any => {
     let exp = loadFromCache(chunkName, props, modCache)
-
+    /*eslint-disable */
     if (!exp) {
       let mod
 
       if (!isWebpack() && path) {
         const modulePath = callForString(path, props) || ''
         mod = tryRequire(modulePath)
-      }
-      else if (isWebpack() && resolve) {
-        const weakId = callForString(resolve, props)
+      } else if (isWebpack() && resolve) {
+        const isServer = typeof window === 'undefined'
 
+        const weakId = callForString(resolve, props)
+        console.log(
+          'Synchronously requires on',
+          isServer ? 'server' : 'client',
+          'weakId',
+          weakId
+        )
         if (__webpack_modules__[weakId]) {
+          console.log(
+            '__webpack_modules__[weakId] requires on',
+            isServer ? 'server' : 'client',
+            'weakId',
+            weakId
+          )
           mod = tryRequire(weakId)
         }
       }
-
+      /*eslint-enable */
       if (mod) {
         exp = resolveExport(
           mod,

@@ -50,9 +50,9 @@ export default function universal<Props: Props>(
 
   const render = userRender || createDefaultRender(Loading, Err)
 
-  const isDynamic = hasBabelPlugin || testBabelPlugin
+  const isDynamic = options.usesBabelPlugin || hasBabelPlugin || testBabelPlugin
   options.isDynamic = isDynamic
-  options.usesBabelPlugin = hasBabelPlugin
+  options.usesBabelPlugin = hasBabelPlugin || options.usesBabelPlugin
   options.modCache = {}
   options.promCache = {}
 

@@ -178,11 +178,11 @@ export default function requireUniversalModule<Props: Props>(
   }
 
   const shouldUpdate = (next, prev): boolean => {
-    console.log('shouldUpdate', next, prev, chunkName);
+    console.log('shouldUpdate', next, prev, chunkName)
     const cacheKey = callForString(chunkName, next)
-    console.log('cacheKey', cacheKey);
+    console.log('cacheKey', cacheKey)
     const config = getConfig(isDynamic, universalConfig, options, prev)
-    console.log('config', config);
+    console.log('config', config)
     const prevCacheKey = callForString(config.chunkName, prev)
 
     return cacheKey !== prevCacheKey
@@ -220,7 +220,7 @@ const getConfig = (
   options: ModuleOptions,
   props: Props
 ): Config => {
-  console.log('getConfig isDynamic', isDynamic);
+  console.log('getConfig isDynamic', isDynamic)
   if (isDynamic) {
     let resultingConfig =
       typeof universalConfig === 'function'
@@ -229,7 +229,7 @@ const getConfig = (
     if (options) {
       resultingConfig = { ...resultingConfig, ...options }
     }
-    console.log('resultingConfig', resultingConfig);
+    console.log('resultingConfig', resultingConfig)
     return resultingConfig
   }
 

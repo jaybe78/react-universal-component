@@ -123,7 +123,7 @@ export default function universal<Props: Props>(
     }
 
     static getDerivedStateFromProps(nextProps, currentState) {
-      console.log('getDerivedStateFromProps', nextProps);
+      console.log('getDerivedStateFromProps', nextProps)
       const { requireSync, shouldUpdate } = req(
         asyncModule,
         options,
@@ -138,7 +138,7 @@ export default function universal<Props: Props>(
     }
 
     componentDidUpdate(prevProps, prevState) {
-      console.log('componentDidUpdate', prevProps);
+      console.log('componentDidUpdate', prevProps)
       if (isDynamic || this._asyncOnly) {
         const { requireSync, requireAsync, shouldUpdate } = req(
           asyncModule,
@@ -213,7 +213,6 @@ export default function universal<Props: Props>(
     componentWillUnmount() {
       this._mounted = false
     }
-
 
     requireAsync(requireAsync: RequireAsync, props: Props, isMount?: boolean) {
       if (this.state.mod && loadingTransition) {

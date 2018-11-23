@@ -665,7 +665,7 @@ describe('advanced', () => {
     expect(component.toJSON()).toMatchSnapshot() // loaded
   })
 
-  it('componentWillReceiveProps: changes component (dynamic require)', async () => {
+  it('componentWillReceiveProps: changes component dynamic require', async () => {
     const components = { MyComponent, MyComponent2 }
     const asyncComponent = createDynamicBablePluginComponent(0, components)
     const options = {
@@ -697,7 +697,7 @@ describe('advanced', () => {
     expect(component.toJSON()).toMatchSnapshot() // loaded
   })
 
-  it('componentWillReceiveProps: changes component (dynamic require) (no babel plugin)', async () => {
+  it('componentWillReceiveProps: changes component dynamic require no babel plugin', async () => {
     const components = { MyComponent, MyComponent2 }
     const { load, options } = createDynamicComponentAndOptions(0, components)
 

@@ -178,9 +178,11 @@ export default function requireUniversalModule<Props: Props>(
   }
 
   const shouldUpdate = (next, prev): boolean => {
+    console.log('shouldUpdate', next, prev, chunkName);
     const cacheKey = callForString(chunkName, next)
-
+    console.log('cacheKey', cacheKey);
     const config = getConfig(isDynamic, universalConfig, options, prev)
+    console.log('config', config);
     const prevCacheKey = callForString(config.chunkName, prev)
 
     return cacheKey !== prevCacheKey

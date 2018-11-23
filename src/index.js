@@ -116,23 +116,42 @@ export default function universal<Props: Props>(
 
     constructor(props: Props, context: {}) {
       super(props, context)
-      this.state = { error: null }
+      this.state = {
+        error: null,
+        context: this.context
+      }
     }
 
-    /*   static getDerivedStateFromProps(props, state) {
+    static getDerivedStateFromProps(nextProps, currentState) {
+      console.log('getDerivedStateFromProps', nextProps);
+      const { requireSync, shouldUpdate } = req(
+        asyncModule,
+        options,
+        nextProps,
+        currentState.props
+      )
+      if (isHMR() && shouldUpdate(currentState.props, nextProps)) {
+        const mod = requireSync(nextProps, currentState.context)
+        return { ...currentState, mod }
+      }
+      return null
+    }
+
+    componentDidUpdate(prevProps, prevState) {
+      console.log('componentDidUpdate', prevProps);
       if (isDynamic || this._asyncOnly) {
         const { requireSync, requireAsync, shouldUpdate } = req(
           asyncModule,
           options,
-          state,
-          this.props
+          this.props,
+          prevProps
         )
-        console.log('componentWillReceiveProps:', this.props)
-        if (shouldUpdate(nextProps, this.props)) {
+
+        if (shouldUpdate(this.props, prevProps)) {
           let mod
 
           try {
-            mod = requireSync(nextProps, this.context)
+            mod = requireSync(this.props, this.context)
           }
           catch (error) {
             return this.update({ error })
@@ -141,7 +160,7 @@ export default function universal<Props: Props>(
           this.handleBefore(false, !!mod)
 
           if (!mod) {
-            return this.requireAsync(requireAsync, nextProps)
+            return this.requireAsync(requireAsync, this.props)
           }
 
           const state = { mod }
@@ -154,23 +173,17 @@ export default function universal<Props: Props>(
 
           this.update(state, false, true)
         }
-        else if (isHMR()) {
-          const mod = requireSync(nextProps, this.context)
-          this.setState({ mod: () => null }) // HMR /w Redux and HOCs can be finicky, so we
-          setTimeout(() => this.setState({ mod })) // toggle components to insure updates occur
-        }
       }
-    }*/
+    }
 
     componentDidMount() {
       this._mounted = true
-
       const { addModule, requireSync, requireAsync, asyncOnly } = req(
         asyncModule,
         options,
         this.props
       )
-      console.log('componentWillMount:', this.props)
+      console.log('componentDidMount:', this.props)
       let mod
 
       try {
@@ -201,48 +214,6 @@ export default function universal<Props: Props>(
       this._mounted = false
     }
 
-    componentWillReceiveProps(nextProps: Props) {
-      if (isDynamic || this._asyncOnly) {
-        const { requireSync, requireAsync, shouldUpdate } = req(
-          asyncModule,
-          options,
-          nextProps,
-          this.props
-        )
-        console.log('componentWillReceiveProps:', this.props)
-        if (shouldUpdate(nextProps, this.props)) {
-          let mod
-
-          try {
-            mod = requireSync(nextProps, this.context)
-          }
-          catch (error) {
-            return this.update({ error })
-          }
-
-          this.handleBefore(false, !!mod)
-
-          if (!mod) {
-            return this.requireAsync(requireAsync, nextProps)
-          }
-
-          const state = { mod }
-
-          if (alwaysDelay) {
-            if (loadingTransition) this.update({ mod: null }) // display `loading` during componentWillReceiveProps
-            setTimeout(() => this.update(state, false, true), minDelay)
-            return
-          }
-
-          this.update(state, false, true)
-        }
-        else if (isHMR()) {
-          const mod = requireSync(nextProps, this.context)
-          this.setState({ mod: () => null }) // HMR /w Redux and HOCs can be finicky, so we
-          setTimeout(() => this.setState({ mod })) // toggle components to insure updates occur
-        }
-      }
-    }
 
     requireAsync(requireAsync: RequireAsync, props: Props, isMount?: boolean) {
       if (this.state.mod && loadingTransition) {

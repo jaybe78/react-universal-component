@@ -229,7 +229,7 @@ export default function universal<Props: Props>(
 
 
     componentWillUnmount() {
-      this._mounted = false
+      this._initialized = false
     }
     requireAsyncOuter(
       requireAsync: RequireAsync,
@@ -266,7 +266,7 @@ export default function universal<Props: Props>(
       isSync?: boolean = false,
       isServer?: boolean = false
     ) => {
-      if (!this._mounted) return
+      if (!this._initialized) return
       if (!state.error) state.error = null
 
       this.handleAfter(state, isMount, isSync, isServer)

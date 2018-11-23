@@ -106,7 +106,6 @@ export default function universal<Props: Props>(
           preloadWeak: true
         })
       }
-
       return mod
     }
 
@@ -135,7 +134,7 @@ export default function universal<Props: Props>(
         mod = requireSync(props, context)
       }
       catch (error) {
-        return this.update({ error })
+        return __update(props, { error, props, context }, this._initialized)
       }
 
       this._asyncOnly = asyncOnly

@@ -7,9 +7,10 @@ exports[`advanced Component.preload: static preload method pre-fetches chunk 1`]
 `;
 
 exports[`advanced Component.preload: static preload method pre-fetches chunk 2`] = `
-<div>
-  Loading...
-</div>
+<p>
+  MyComponent 
+  {}
+</p>
 `;
 
 exports[`advanced Component.preload: static preload method pre-fetches chunk 3`] = `
@@ -26,9 +27,10 @@ exports[`advanced babel-plugin 1`] = `
 `;
 
 exports[`advanced babel-plugin 2`] = `
-<div>
-  Loading...
-</div>
+<p>
+  MyComponent 
+  {}
+</p>
 `;
 
 exports[`advanced componentWillReceiveProps: changes component dynamic require 1`] = `
@@ -38,9 +40,10 @@ exports[`advanced componentWillReceiveProps: changes component dynamic require 1
 `;
 
 exports[`advanced componentWillReceiveProps: changes component dynamic require 2`] = `
-<div>
-  Loading...
-</div>
+<p>
+  MyComponent 
+  {"page":"MyComponent"}
+</p>
 `;
 
 exports[`advanced componentWillReceiveProps: changes component dynamic require 3`] = `
@@ -50,9 +53,10 @@ exports[`advanced componentWillReceiveProps: changes component dynamic require 3
 `;
 
 exports[`advanced componentWillReceiveProps: changes component dynamic require 4`] = `
-<div>
-  Loading...
-</div>
+<p>
+  MyComponent 
+  {"page":"MyComponent2"}
+</p>
 `;
 
 exports[`advanced componentWillReceiveProps: changes component dynamic require no babel plugin 1`] = `
@@ -62,9 +66,10 @@ exports[`advanced componentWillReceiveProps: changes component dynamic require n
 `;
 
 exports[`advanced componentWillReceiveProps: changes component dynamic require no babel plugin 2`] = `
-<div>
-  Loading...
-</div>
+<p>
+  MyComponent 
+  {"page":"MyComponent"}
+</p>
 `;
 
 exports[`advanced componentWillReceiveProps: changes component dynamic require no babel plugin 3`] = `
@@ -74,15 +79,17 @@ exports[`advanced componentWillReceiveProps: changes component dynamic require n
 `;
 
 exports[`advanced componentWillReceiveProps: changes component dynamic require no babel plugin 4`] = `
-<div>
-  Loading...
-</div>
+<p>
+  MyComponent 
+  {"page":"MyComponent2"}
+</p>
 `;
 
 exports[`advanced dynamic requires (async) 1`] = `
-<div>
-  Loading...
-</div>
+<p>
+  MyComponent 
+  {"page":"MyComponent"}
+</p>
 `;
 
 exports[`advanced promise passed directly 1`] = `
@@ -92,9 +99,10 @@ exports[`advanced promise passed directly 1`] = `
 `;
 
 exports[`advanced promise passed directly 2`] = `
-<div>
-  Loading...
-</div>
+<p>
+  MyComponent 
+  {}
+</p>
 `;
 
 exports[`async lifecycle component unmounted: setState not called 1`] = `
@@ -117,7 +125,8 @@ exports[`async lifecycle error 2`] = `
 
 exports[`async lifecycle error 3`] = `
 <div>
-  Loading...
+  Error: 
+  test error
 </div>
 `;
 
@@ -134,9 +143,10 @@ exports[`async lifecycle loading 2`] = `
 `;
 
 exports[`async lifecycle loading 3`] = `
-<div>
-  Loading...
-</div>
+<p>
+  MyComponent 
+  {}
+</p>
 `;
 
 exports[`async lifecycle loading 4`] = `
@@ -154,7 +164,8 @@ exports[`async lifecycle timeout error 1`] = `
 
 exports[`async lifecycle timeout error 2`] = `
 <div>
-  Loading...
+  Error: 
+  timeout exceeded
 </div>
 `;
 
@@ -171,9 +182,10 @@ exports[`other options key (function): resolves export to function return 2`] = 
 `;
 
 exports[`other options key (function): resolves export to function return 3`] = `
-<div>
-  Loading...
-</div>
+<p>
+  MyComponent 
+  {}
+</p>
 `;
 
 exports[`other options key (string): resolves export to value of key 1`] = `
@@ -189,9 +201,10 @@ exports[`other options key (string): resolves export to value of key 2`] = `
 `;
 
 exports[`other options key (string): resolves export to value of key 3`] = `
-<div>
-  Loading...
-</div>
+<p>
+  MyComponent 
+  {}
+</p>
 `;
 
 exports[`other options minDelay: loads for duration of minDelay even if component ready 1`] = `
@@ -207,21 +220,24 @@ exports[`other options minDelay: loads for duration of minDelay even if componen
 `;
 
 exports[`other options minDelay: loads for duration of minDelay even if component ready 3`] = `
-<div>
-  Loading...
-</div>
+<p>
+  MyComponent 
+  {}
+</p>
 `;
 
 exports[`other options onLoad async: is called and passed an es6 module 1`] = `
-<div>
-  Loading...
-</div>
+<p>
+  MyComponent 
+  {"foo":"bar"}
+</p>
 `;
 
 exports[`other options onLoad async: is called and passed entire module 1`] = `
-<div>
-  Loading...
-</div>
+<p>
+  MyComponent 
+  {}
+</p>
 `;
 
 exports[`props: all components receive props <MyUniversalComponent error={new Error} /> - also displays error component 1`] = `
@@ -257,8 +273,10 @@ exports[`props: all components receive props arguments/props passed to asyncComp
 `;
 
 exports[`props: all components receive props arguments/props passed to asyncComponent function for data-fetching 2`] = `
-<div>
-  Loading...
+<div
+  prop="foo"
+>
+  foo
 </div>
 `;
 
@@ -275,9 +293,10 @@ exports[`props: all components receive props components passed as elements: erro
 `;
 
 exports[`props: all components receive props components passed as elements: error 3`] = `
-<div>
-  Loading...
-</div>
+<p>
+  Error! 
+  {"prop":"foo","error":{}}
+</p>
 `;
 
 exports[`props: all components receive props components passed as elements: error 4`] = `
@@ -302,7 +321,7 @@ exports[`props: all components receive props components passed as elements: load
 
 exports[`props: all components receive props components passed as elements: loading 3`] = `
 <p>
-  Loading... 
+  MyComponent 
   {"prop":"foo"}
 </p>
 `;
@@ -327,9 +346,10 @@ exports[`props: all components receive props custom error component 2`] = `
 `;
 
 exports[`props: all components receive props custom error component 3`] = `
-<div>
-  Loading...
-</div>
+<p>
+  Error! 
+  {"prop":"foo","error":{}}
+</p>
 `;
 
 exports[`props: all components receive props custom error component 4`] = `
@@ -354,7 +374,7 @@ exports[`props: all components receive props custom loading component 2`] = `
 
 exports[`props: all components receive props custom loading component 3`] = `
 <p>
-  Loading... 
+  MyComponent 
   {"prop":"foo"}
 </p>
 `;

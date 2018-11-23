@@ -3,7 +3,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import hoist from 'hoist-non-react-statics'
 import req from './requireUniversalModule'
-
+import { __update } from './helpers'
 import type {
   Config,
   ConfigFunc,
@@ -59,6 +59,7 @@ export default function universal<Props: Props>(
   return class UniversalComponent extends React.Component<void, Props, *> {
     /* eslint-disable react/sort-comp */
     _mounted: boolean
+    _initialized: boolean
     _asyncOnly: boolean
 
     state: State
@@ -116,10 +117,55 @@ export default function universal<Props: Props>(
 
     constructor(props: Props, context: {}) {
       super(props, context)
-      this.state = {
-        error: null,
-        context: this.context
+      this.props=props
+      this.state = this.init(props, context)
+    }
+
+    init(props, context) {
+      this._initialized = false
+      const { addModule, requireSync, requireAsync, asyncOnly } = req(
+        asyncModule,
+        options,
+        props
+      )
+
+      let mod
+
+      try {
+        mod = requireSync(props, context)
       }
+      catch (error) {
+        return this.update({ error })
+      }
+
+      this._asyncOnly = asyncOnly
+      const chunkName = addModule(props) // record the module for SSR flushing :)
+
+      if (context.report) {
+        context.report(chunkName)
+      }
+
+      if (mod || isServer) {
+        console.log('in mod || server:', mod, isServer)
+        this.handleBefore(true, true, isServer)
+        return __update(
+          props,
+          { asyncOnly, props, mod, context },
+          this._initialized,
+          true,
+          true,
+          isServer
+        )
+      }
+      console.log('out mod || server:', mod, isServer)
+      this.handleBefore(true, false)
+      this.requireAsyncOuter(
+        requireAsync,
+        props,
+        { props, asyncOnly, mod, context },
+        context,
+        true)
+      return { mod, asyncOnly, context, props, error: null }
     }
 
     static getDerivedStateFromProps(nextProps, currentState) {
@@ -135,6 +181,10 @@ export default function universal<Props: Props>(
         return { ...currentState, mod }
       }
       return null
+    }
+
+    componentDidMount() {
+      this._initialized = true
     }
 
     componentDidUpdate(prevProps, prevState) {
@@ -160,7 +210,7 @@ export default function universal<Props: Props>(
           this.handleBefore(false, !!mod)
 
           if (!mod) {
-            return this.requireAsync(requireAsync, this.props)
+            return this.requireAsyncOuter(requireAsync, this.props, { mod })
           }
 
           const state = { mod }
@@ -176,52 +226,25 @@ export default function universal<Props: Props>(
       }
     }
 
-    componentDidMount() {
-      this._mounted = true
-      const { addModule, requireSync, requireAsync, asyncOnly } = req(
-        asyncModule,
-        options,
-        this.props
-      )
-      console.log('componentDidMount:', this.props)
-      let mod
 
-      try {
-        mod = requireSync(this.props, this.context)
-      }
-      catch (error) {
-        return this.update({ error })
-      }
-
-      this._asyncOnly = asyncOnly
-      const chunkName = addModule(this.props) // record the module for SSR flushing :)
-
-      if (this.context.report) {
-        this.context.report(chunkName)
-      }
-
-      if (mod || isServer) {
-        this.handleBefore(true, true, isServer)
-        this.update({ mod }, true, true, isServer)
-        return
-      }
-
-      this.handleBefore(true, false)
-      this.requireAsync(requireAsync, this.props, true)
-    }
 
     componentWillUnmount() {
       this._mounted = false
     }
-
-    requireAsync(requireAsync: RequireAsync, props: Props, isMount?: boolean) {
-      if (this.state.mod && loadingTransition) {
+    requireAsyncOuter(
+      requireAsync: RequireAsync,
+      props: Props,
+      state: State,
+      context: Context,
+      isMount?: boolean
+    ) {
+      console.log('requireAsync:')
+      if (!state.mod && loadingTransition) {
         this.update({ mod: null }) // display `loading` during componentWillReceiveProps
       }
-      console.log('requireAsync:')
       const time = new Date()
 
-      requireAsync(props, this.context)
+      requireAsync(props, context)
         .then((mod: ?any) => {
           const state = { mod }
           console.log('Within requireAsync')
@@ -233,8 +256,9 @@ export default function universal<Props: Props>(
 
           this.update(state, isMount)
         })
-        .catch(error => this.update({ error }))
+        .catch(error => this.update({ error, props, context }))
     }
+
 
     update = (
       state: State,
@@ -253,6 +277,7 @@ export default function universal<Props: Props>(
       isSync: boolean,
       isServer?: boolean = false
     ) {
+      console.log('handleBefore: ', this.props)
       if (this.props.onBefore) {
         const { onBefore } = this.props
         const info = { isMount, isSync, isServer }

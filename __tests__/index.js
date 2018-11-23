@@ -269,7 +269,7 @@ describe('other options', () => {
     expect(component.toJSON()).toMatchSnapshot() // success
   })
 
-  it('onLoad (async): is called and passed an es6 module', async () => {
+  it('onLoad async: is called and passed an es6 module', async () => {
     const onLoad = jest.fn()
     const mod = { __esModule: true, default: MyComponent }
     const asyncComponent = createComponent(40, mod)
@@ -286,7 +286,7 @@ describe('other options', () => {
     expect(component.toJSON()).toMatchSnapshot() // success
   })
 
-  it('onLoad (async): is called and passed entire module', async () => {
+  it('onLoad async: is called and passed entire module', async () => {
     const onLoad = jest.fn()
     const mod = { __esModule: true, foo: MyComponent }
     const asyncComponent = createComponent(40, mod)
@@ -703,6 +703,7 @@ describe('advanced', () => {
 
     const Component = universal(load, options)
 
+
     class Container extends React.Component {
       render() {
         const page = (this.state && this.state.page) || 'MyComponent'
@@ -712,16 +713,18 @@ describe('advanced', () => {
 
     let instance
     const component = renderer.create(<Container ref={i => (instance = i)} />)
+    console.log(component.toJSON());
     expect(component.toJSON()).toMatchSnapshot() // loading...
 
     await waitFor(2)
     expect(component.toJSON()).toMatchSnapshot() // loaded
-
+    console.log(component.toJSON());
     instance.setState({ page: 'MyComponent2' })
 
+    console.log(component.toJSON());
     expect(component.toJSON()).toMatchSnapshot() // loading...
     await waitFor(2)
-
+    console.log(component.toJSON());
     expect(component.toJSON()).toMatchSnapshot() // loaded
   })
 })
